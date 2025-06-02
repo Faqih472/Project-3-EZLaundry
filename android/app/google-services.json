@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "865096047071",
+    "project_id": "golaundry-35766",
+    "storage_bucket": "golaundry-35766.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865096047071:android:4ffcb60241eb0c28348c6a",
+        "android_client_info": {
+          "package_name": "com.abw.golaundry"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFxB066enYo8hPmXiywqc27x5PWeW1qtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
