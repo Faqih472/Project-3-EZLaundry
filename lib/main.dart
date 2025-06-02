@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'login.dart';  // Import halaman login
+import 'auth/login.dart';  // Import halaman login
 
 
 void main() async {
