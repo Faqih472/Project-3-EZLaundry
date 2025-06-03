@@ -137,7 +137,7 @@ class _TambahOrderPageState extends State<TambahOrderPage> {
               // Nomor HP - disabled
               TextFormField(
                 decoration: InputDecoration(labelText: "Nomor HP"),
-                initialValue: _nomorHp ?? '',
+                initialValue: _nomorHp ?? 'Lengkapi Nomor HP pada Pengaturan',
                 enabled: false,
               ),
               // Alamat lengkap - input biasa
