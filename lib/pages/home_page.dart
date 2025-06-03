@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // import auth
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'tambah_order_page.dart';
 import 'tambah_pengeluaran_page.dart';
@@ -16,13 +16,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   int orderDiproses = 0;
   int orderSelesai = 0;
 
-  String? userRole; // simpan role user
+  String? userRole;
 
   @override
   void initState() {
     super.initState();
-    getOrderStats();
-    fetchUserRole();  // Ambil role user saat init
+    fetchUserRole(); // Panggil ini untuk ambil role & kemudian getOrderStats()
   }
 
   Future<void> fetchUserRole() async {
@@ -31,14 +30,27 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
       if (doc.exists) {
         setState(() {
-          userRole = doc.data()?['role'] ?? 'user'; // default 'user' jika role kosong
+          userRole = doc.data()?['role'] ?? 'user';
         });
+        await getOrderStats(); // Panggil setelah dapat role
       }
     }
   }
 
   Future<void> getOrderStats() async {
-    final snapshot = await FirebaseFirestore.instance.collection('orders').get();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    QuerySnapshot snapshot;
+
+    if (userRole == 'admin') {
+      snapshot = await FirebaseFirestore.instance.collection('orders').get();
+    } else {
+      snapshot = await FirebaseFirestore.instance
+          .collection('orders')
+          .where('user_uid', isEqualTo: user.uid)
+          .get();
+    }
 
     int total = snapshot.docs.length;
     int diproses = snapshot.docs.where((doc) => doc['status_order'] == 'Diproses').length;
@@ -179,8 +191,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     );
                   },
                 ),
-
-                // TOMBOL "Tambah Pengeluaran" hanya tampil kalau userRole == 'admin'
                 if (userRole == 'admin')
                   _animatedButton(
                     label: 'Tambah Pengeluaran',
