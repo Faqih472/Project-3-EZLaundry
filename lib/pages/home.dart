@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../home_page.dart';
-import '../transaksi_page.dart';
-import '../laporan_page.dart';
-import '../setting_page.dart';
+import './home_page.dart';
+import './transaksi_page.dart';
+import './laporan_page.dart';
+import './setting_page.dart';
 
 class MyHomePage extends StatefulWidget {
   final String role; // menerima role dari login (admin / user)
