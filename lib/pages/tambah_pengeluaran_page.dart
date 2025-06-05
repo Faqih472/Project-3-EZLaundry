@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TambahPengeluaranPage extends StatefulWidget {
@@ -15,7 +15,15 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
   String? _keterangan;
 
   final List<String> _kategoriList = [
-    '-', 'Gaji', 'Bonus', 'Listrik', 'Bahan Baku', 'Air', 'Sewa', 'Lain-lain'
+    'Listrik',
+    'Air',
+    'Bahan Cuci',
+    'Transportasi',
+    'Makanan Karyawan',
+    'Perawatan Mesin',
+    'Sewa Tempat',
+    'Perlengkapan Operasional',
+    'Lain-lain',
   ];
 
   final TextEditingController _jumlahController = TextEditingController();
@@ -36,9 +44,10 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
   }
 
   Future<void> _simpanPengeluaran() async {
-    if (_formKey.currentState!.validate() && _selectedDate != null && _selectedKategori != null) {
+    if (_formKey.currentState!.validate() &&
+        _selectedDate != null &&
+        _selectedKategori != null) {
       try {
-        // Memastikan bahwa jumlah input berupa angka
         int jumlahPengeluaran = int.parse(_jumlah!);
 
         await FirebaseFirestore.instance.collection('pengeluaran').add({
@@ -67,6 +76,13 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
   }
 
   @override
+  void dispose() {
+    _jumlahController.dispose();
+    _keteranganController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Tambah Pengeluaran")),
@@ -85,37 +101,45 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
                 trailing: Icon(Icons.calendar_today),
                 onTap: () => _selectDate(context),
               ),
+              SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 value: _selectedKategori,
-                hint: Text("Pilih Kategori"),
-                items: _kategoriList.map((kategori) => DropdownMenuItem(
-                  value: kategori,
-                  child: Text(kategori),
-                )).toList(),
+                hint: Text("Pilih Kategori Pengeluaran"),
+                items: _kategoriList.map((kategori) {
+                  return DropdownMenuItem(
+                    value: kategori,
+                    child: Text(kategori),
+                  );
+                }).toList(),
                 onChanged: (value) => setState(() => _selectedKategori = value),
-                validator: (value) => value == null || value == '-' ? 'Pilih kategori' : null,
+                validator: (value) =>
+                    value == null ? 'Kategori harus dipilih' : null,
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _jumlahController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(labelText: "Jumlah Pengeluaran"),
                 validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Wajib diisi';
-                  } else if (int.tryParse(value) == null) {
-                    return 'Harap masukkan angka yang valid';
+                  if (value == null || value.isEmpty) {
+                    return 'Jumlah wajib diisi';
+                  } else if (int.tryParse(value) == null ||
+                      int.parse(value) <= 0) {
+                    return 'Masukkan angka valid (> 0)';
                   }
                   return null;
                 },
                 onChanged: (value) => _jumlah = value,
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _keteranganController,
                 decoration: InputDecoration(labelText: "Keterangan"),
-                validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'Keterangan wajib diisi' : null,
                 onChanged: (value) => _keterangan = value,
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _simpanPengeluaran,
                 child: Text("Simpan"),
