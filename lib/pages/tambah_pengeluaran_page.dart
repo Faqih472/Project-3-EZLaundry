@@ -19,9 +19,8 @@ class _TambahPengeluaranPageState extends State<TambahPengeluaranPage> {
     'Air',
     'Bahan Cuci',
     'Transportasi',
-    'Makanan Karyawan',
-    'Perawatan Mesin',
     'Sewa Tempat',
+    'Perawatan Mesin',
     'Perlengkapan Operasional',
     'Lain-lain',
   ];
