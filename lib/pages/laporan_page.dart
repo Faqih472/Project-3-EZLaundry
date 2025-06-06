@@ -30,8 +30,14 @@ class _LaporanPageState extends State<LaporanPage> {
     List<List<String>> tableData;
 
     if (jenis == 'orders') {
+      // Filter data supaya status_order bukan "diproses"
+      final filteredData = data.where((order) {
+        final status = (order['status_order'] ?? '').toString().toLowerCase();
+        return status != 'diproses';
+      }).toList();
+
       headers = ['username', 'No HP', 'Alamat', 'Layanan', 'Berat', 'Status Order', 'Status Bayar', 'Tanggal', 'Order ID', 'Harga Total'];
-      tableData = data.map<List<String>>((order) {
+      tableData = filteredData.map<List<String>>((order) {
         final tanggal = (order['tanggal_order'] as Timestamp?)?.toDate();
         final formattedTanggal = tanggal != null
             ? '${tanggal.year}-${tanggal.month.toString().padLeft(2, '0')}-${tanggal.day.toString().padLeft(2, '0')} '
