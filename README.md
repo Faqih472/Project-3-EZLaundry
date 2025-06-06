@@ -1,4 +1,4 @@
-# golaundry
+# EZLaundry
 
 A new Flutter project.
 
