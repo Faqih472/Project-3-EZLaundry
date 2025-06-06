@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'tambah_order_page.dart';
@@ -17,11 +16,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   int orderSelesai = 0;
 
   String? userRole;
+  String? username;
 
   @override
   void initState() {
     super.initState();
-    fetchUserRole(); // Panggil ini untuk ambil role & kemudian getOrderStats()
+    fetchUserRole();
   }
 
   Future<void> fetchUserRole() async {
@@ -31,8 +31,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       if (doc.exists) {
         setState(() {
           userRole = doc.data()?['role'] ?? 'user';
+          username = doc.data()?['username'] ?? 'User';
         });
-        await getOrderStats(); // Panggil setelah dapat role
+        await getOrderStats();
       }
     }
   }
@@ -161,7 +162,20 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           child: SingleChildScrollView(
             padding: EdgeInsets.all(16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (userRole != null)
+                  Text(
+                    userRole == 'admin'
+                        ? 'Selamat datang Admin'
+                        : 'Selamat datang "$username' '"',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                SizedBox(height: 12),
                 Text(
                   'Dashboard',
                   style: TextStyle(
