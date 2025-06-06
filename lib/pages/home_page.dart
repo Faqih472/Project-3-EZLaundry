@@ -179,18 +179,19 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   ],
                 ),
                 SizedBox(height: 20),
-                _animatedButton(
-                  label: 'Tambah Order',
-                  icon: Icons.add_shopping_cart,
-                  color1: Colors.blueAccent,
-                  color2: Colors.lightBlueAccent,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TambahOrderPage()),
-                    );
-                  },
-                ),
+                if (userRole != 'admin')
+                  _animatedButton(
+                    label: 'Tambah Order',
+                    icon: Icons.add_shopping_cart,
+                    color1: Colors.blueAccent,
+                    color2: Colors.lightBlueAccent,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TambahOrderPage()),
+                      );
+                    },
+                  ),
                 if (userRole == 'admin')
                   _animatedButton(
                     label: 'Tambah Pengeluaran',
