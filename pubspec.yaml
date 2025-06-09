@@ -1,5 +1,5 @@
-name: golaundry
-description: "A new Flutter project."
+name: golaundry # Nama proyek Anda
+description: "A Flutter project for the GoLaundry application." # Deskripsi yang lebih spesifik
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.6.2
+  sdk: '>=3.0.0 <4.0.0' # Rentang SDK yang direkomendasikan untuk Flutter versi terbaru
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,19 +30,25 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  pdf: ^3.10.7
-  printing: ^5.12.0
-  path_provider: ^2.1.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  firebase_core: ^2.8.0
-  firebase_auth: ^4.20.0  # Update firebase_auth ke versi terbaruovider: ^6.1.3
-  cloud_firestore: ^4.9.1
+
+  # Firebase Core for all Firebase services
+  firebase_core: ^2.27.0 # Versi terbaru yang stabil per Juni 2025
+  firebase_auth: ^4.17.8 # Versi terbaru yang stabil per Juni 2025
+  cloud_firestore: ^4.15.8 # Versi terbaru yang stabil per Juni 2025
+
+  # Utilities and UI related packages
   shared_preferences: ^2.2.2
-  intl: ^0.18.1
+  intl: ^0.19.0 # Versi terbaru
   google_fonts: ^6.2.1
+
+  # PDF generation and printing
+  pdf: ^3.10.7
+  printing: ^5.12.0
+  path_provider: ^2.1.1 # Pastikan ini di sini untuk dependensi yang benar
 
 dev_dependencies:
   flutter_test:
@@ -53,7 +59,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^3.0.0 # Versi terbaru
+  flutter_launcher_icons: ^0.13.1 # Untuk membuat launcher icon aplikasi
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -65,12 +72,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-  assets:
-    - assets/icon/app_icon.png
+
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/icon/app_icon.png # Path spesifik ke logo Anda
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -97,3 +102,15 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# Konfigurasi untuk flutter_launcher_icons
+flutter_launcher_icons:
+  android: "launcher_icon" # Nama ikon yang akan digunakan di Android
+  ios: true              # Aktifkan pembuatan ikon untuk iOS
+  image_path: "assets/icon/app_icon.png" # Path ke gambar ikon yang akan digunakan
+
+  # (Opsional) Untuk Android 8.0 (Oreo) ke atas: Adaptive Icons
+  # Anda bisa menentukan warna latar belakang untuk ikon adaptif.
+  # Jika Anda memiliki gambar foreground terpisah, Anda bisa mengaturnya di sini.
+  # adaptive_icon_background: "#E0F2F7" # Contoh: Warna latar belakang LoginPage
+  # adaptive_icon_foreground: "assets/icon/app_icon_foreground.png" # Jika Anda memiliki gambar foreground terpisah
