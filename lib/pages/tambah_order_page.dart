@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class TambahOrderPage extends StatefulWidget {
+  const TambahOrderPage({super.key});
+
   @override
-  _TambahOrderPageState createState() => _TambahOrderPageState();
+  State<TambahOrderPage> createState() => _TambahOrderPageState();
 }
 
 class _TambahOrderPageState extends State<TambahOrderPage> {
@@ -16,12 +20,10 @@ class _TambahOrderPageState extends State<TambahOrderPage> {
   String? _alamat;
   String? _selectedLayanan;
   double? _berat;
+  int? _hargaTotal;
 
-  // Status pembayaran dan order otomatis default dan tidak bisa diubah
   String _statusPembayaran = 'Lunas';
   String _statusOrder = 'Diproses';
-
-  int? _hargaTotal;
 
   final List<String> layanan = ['Cuci Kering', 'Cuci Setrika', 'Express'];
 
@@ -29,6 +31,12 @@ class _TambahOrderPageState extends State<TambahOrderPage> {
     'Cuci Kering': 5000,
     'Cuci Setrika': 7000,
     'Express': 10000,
+  };
+
+  final Map<String, IconData> layananIcons = {
+    'Cuci Kering': LucideIcons.wind,
+    'Cuci Setrika': LucideIcons.shirt, // pengganti iron
+    'Express': LucideIcons.alarmClock,
   };
 
   bool _isLoading = true;
@@ -51,7 +59,7 @@ class _TambahOrderPageState extends State<TambahOrderPage> {
       } else {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Data user tidak ditemukan')),
+          const SnackBar(content: Text('Data user tidak ditemukan')),
         );
       }
     }
@@ -68,21 +76,17 @@ class _TambahOrderPageState extends State<TambahOrderPage> {
     }
   }
 
-  void _submitOrder() async {
+  Future<void> _submitOrder() async {
     if (_formKey.currentState!.validate() &&
         _selectedLayanan != null &&
         _username != null &&
         _nomorHp != null &&
         _hargaTotal != null) {
       try {
-        // Buat order ID unik, contoh: ORD + timestamp
         String orderId = 'ORD${DateTime.now().millisecondsSinceEpoch}';
 
-        await FirebaseFirestore.instance
-            .collection('orders')
-            .doc(orderId) // simpan dengan doc ID orderId
-            .set({
-          'order_id': orderId,      // simpan order_id di field juga
+        await FirebaseFirestore.instance.collection('orders').doc(orderId).set({
+          'order_id': orderId,
           'user_uid': user!.uid,
           'username': _username,
           'nomor_hp': _nomorHp,
@@ -95,10 +99,12 @@ class _TambahOrderPageState extends State<TambahOrderPage> {
           'tanggal_order': DateTime.now(),
         });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Transaksi berhasil disimpan')),
-        );
-        Navigator.pop(context);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Transaksi berhasil disimpan')),
+          );
+          Navigator.pop(context);
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal menyimpan data: $e')),
@@ -106,91 +112,136 @@ class _TambahOrderPageState extends State<TambahOrderPage> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Harap lengkapi semua field!')),
+        const SnackBar(content: Text('Harap lengkapi semua field!')),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = const Color(0xFF2196F3);
+    final backgroundColor = Colors.white;
+
     if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(title: Text("Tambah Order")),
+      return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text("Tambah Order")),
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        title: const Text("Tambah Order"),
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              // Username - disabled
               TextFormField(
-                decoration: InputDecoration(labelText: "Username"),
                 initialValue: _username ?? '',
                 enabled: false,
+                style: GoogleFonts.poppins(),
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.grey.shade100,
+                ),
               ),
-              // Nomor HP - disabled
+              const SizedBox(height: 12),
               TextFormField(
-                decoration: InputDecoration(labelText: "Nomor HP"),
-                initialValue: _nomorHp ?? 'Lengkapi Nomor HP pada Pengaturan',
+                initialValue: _nomorHp ?? '',
                 enabled: false,
+                style: GoogleFonts.poppins(),
+                decoration: InputDecoration(
+                  labelText: 'Nomor HP',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.grey.shade100,
+                ),
               ),
-              // Alamat lengkap - input biasa
+              const SizedBox(height: 12),
               TextFormField(
-                decoration: InputDecoration(labelText: "Alamat Lengkap"),
-                validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
-                onChanged: (value) => _alamat = value,
+                onChanged: (val) => _alamat = val,
+                validator: (val) => val == null || val.isEmpty ? 'Alamat wajib diisi' : null,
+                style: GoogleFonts.poppins(),
+                decoration: InputDecoration(
+                  labelText: 'Alamat Lengkap',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.grey.shade50,
+                ),
               ),
-              // Pilih layanan
+              const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 value: _selectedLayanan,
-                hint: Text("Pilih Layanan"),
-                items: layanan
-                    .map((layanan) => DropdownMenuItem(
-                  value: layanan,
-                  child: Text(layanan),
-                ))
-                    .toList(),
+                decoration: InputDecoration(
+                  labelText: 'Pilih Layanan',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.grey.shade50,
+                ),
+                items: layanan.map((layanan) {
+                  return DropdownMenuItem(
+                    value: layanan,
+                    child: Row(
+                      children: [
+                        Icon(layananIcons[layanan], color: primaryColor),
+                        const SizedBox(width: 8),
+                        Text(layanan, style: GoogleFonts.poppins()),
+                      ],
+                    ),
+                  );
+                }).toList(),
                 onChanged: (value) {
                   setState(() => _selectedLayanan = value);
                   hitungHargaTotal();
                 },
-                validator: (value) => value == null ? 'Pilih layanan' : null,
+                validator: (val) => val == null ? 'Pilih layanan' : null,
               ),
-              // Berat
+              const SizedBox(height: 12),
               TextFormField(
-                decoration: InputDecoration(labelText: "Berat (kg)"),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Berat wajib diisi';
-                  }
-                  final parsed = double.tryParse(value);
-                  if (parsed == null || parsed <= 0) {
-                    return 'Berat harus lebih dari 0 kg';
-                  }
-                  return null;
-                },
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 onChanged: (value) {
                   _berat = double.tryParse(value);
                   hitungHargaTotal();
                 },
+                validator: (val) {
+                  if (val == null || val.isEmpty) return 'Berat wajib diisi';
+                  final parsed = double.tryParse(val);
+                  if (parsed == null || parsed <= 0) return 'Berat harus lebih dari 0 kg';
+                  return null;
+                },
+                style: GoogleFonts.poppins(),
+                decoration: InputDecoration(
+                  labelText: 'Berat (kg)',
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.grey.shade50,
+                ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 16),
               if (_hargaTotal != null)
                 Text(
                   "Total Harga: Rp $_hargaTotal",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-              SizedBox(height: 20),
-              ElevatedButton(
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
                 onPressed: _submitOrder,
-                child: Text("Simpan Order"),
+                icon: const Icon(LucideIcons.save),
+                label: const Text("Simpan Order"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  textStyle: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
               ),
             ],
           ),
