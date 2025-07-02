@@ -1,3 +1,7 @@
+
+![WhatsApp Image 2025-06-28 at 23 04 00](https://github.com/user-attachments/assets/1b061d2f-bd0c-4348-872d-605a721f1fdc)
+
+
 # 🧺 EZLaundry
 
 EZLaundry adalah aplikasi mobile berbasis **Flutter + Firebase** yang dirancang untuk mempermudah manajemen layanan laundry secara online, khususnya bagi pelaku usaha laundry kecil hingga menengah. Aplikasi ini mendukung proses pemesanan jasa laundry oleh pelanggan serta pengelolaan pesanan, pengeluaran, dan laporan oleh admin.
