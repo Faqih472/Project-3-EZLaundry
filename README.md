@@ -8,6 +8,14 @@ EZLaundry adalah aplikasi mobile berbasis **Flutter + Firebase** yang dirancang 
 
 ---
 
+👥 Tim Pengembang
+
+- **Muhammad Izzudin Al Faqih** (1122140139) – Backend Developer (Firebase, integrasi data)
+- **Ardiansyah** (1122140155) – Frontend Developer (UI/UX Flutter)
+- **Budi Prasetyo** (1122140096) – Data Analyst / SRS Author
+
+---
+
 ## 📱 Fitur Utama
 
 ### 👤 **User (Pelanggan)**
@@ -36,13 +44,6 @@ EZLaundry adalah aplikasi mobile berbasis **Flutter + Firebase** yang dirancang 
 
 ---
 
-👥 Tim Pengembang
-
-Muhammad Izzudin Al Faqih	1122140139	Backend Developer (Firebase, integrasi data)
-Ardiansyah	1122140155	Frontend Developer (Tampilan UI/UX Flutter)
-Budi Prasetyo	1122140096	Data Analyst / SRS Author (Perancang kebutuhan sistem)
-
----
 
 🚀 Cara Menjalankan Aplikasi
 
@@ -98,7 +99,8 @@ printing
 
 📄 Dokumen Terkait
 
-SRS EZLaundry (PDF) 
+SRS EZLaundry (PDF) [SRS_EZLaundry_Bab1-5_Dikembangkan_Rapih_Fix-1 (3).docx](https://github.com/user-attachments/files/21011738/SRS_EZLaundry_Bab1-5_Dikembangkan_Rapih_Fix-1.3.docx)
+
 
 
 ---
