@@ -94,10 +94,7 @@ printing
 
 📄 Dokumen Terkait
 
-SRS EZLaundry (PDF) (bila tersedia)
-
-Diagram Use Case, Activity, dan Class tersedia di folder /docs atau dalam aplikasi langsung
-
+SRS EZLaundry (PDF) 
 
 
 ---
