@@ -44,7 +44,7 @@ Budi Prasetyo	1122140096	Data Analyst / SRS Author (Perancang kebutuhan sistem)
 
 1. Clone repositori ini:
 
-https://github.com/Faqih472/Project3Kampus-EZLaundry.git
+git clone [https://github.com/username/ezlaundry.git cd ezlaundry](https://github.com/Faqih472/Project3Kampus-EZLaundry.git)
 cd ezlaundry
 
 
