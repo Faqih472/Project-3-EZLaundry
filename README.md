@@ -99,7 +99,7 @@ printing
 
 📄 Dokumen Terkait
 
-SRS EZLaundry (PDF) [SRS_EZLaundry_Bab1-5_Dikembangkan_Rapih_Fix-1 (3).docx](https://github.com/user-attachments/files/21011738/SRS_EZLaundry_Bab1-5_Dikembangkan_Rapih_Fix-1.3.docx)
+SRS EZLaundry [SRS_EZLaundry_Bab1-5_Dikembangkan_Rapih_Fix-1 (3).docx](https://github.com/user-attachments/files/21011738/SRS_EZLaundry_Bab1-5_Dikembangkan_Rapih_Fix-1.3.docx)
 
 
 
